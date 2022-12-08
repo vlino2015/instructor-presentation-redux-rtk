@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Redux Toolkit</title>
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <textarea id="source">
+
+
+class: spaced
+layout: true
+
+---
+
+class: inverse, center, middle
+
+# Redux Toolkit 
+## [docs](https://redux-toolkit.js.org/)
+---
+
+The Redux Toolkit package is intended to be the standard way to write Redux logic. 
+It was originally created to help address three common concerns about Redux:
+
+- "Configuring a Redux store is too complicated"
+- "I have to add a lot of packages to get Redux to do anything useful"
+- "Redux requires too much boilerplate code"
+
+---
+# The core of Redux Toolkit
+
+Redux Toolkit (RTK) is a set of utility functions. Think of utility functions exported from the library where these functions exist to make Redux development a easier. 
+
+And it’s less boilerplate-like, so you can really focus on being efficient in writing code. 
+
+This is the entire premise of the Redux toolkit. 
+
+---
+
+This leads to RTK being opinionated. Out-of-the-box, it makes choices for the Redux store setup and includes many Redux add-ons. 
+
+
+---
+# RTK Main Dependencies 
+
+The Redux toolkit main dependencies 
+1. immer
+2. redux 
+3. redux-thunk 
+4. reselect
+
+---
+# Immer 
+
+When you first learned about Redux, you should remember the rule: “do not mutate state in your reducers.” 
+
+Consequently, you probably remember writing a lot of spread syntax magic like the following:
+
+```js 
+{
+    ...state,
+      [userId]: {
+       ...allUserMsgs,
+      }
+}
+```
+
+Well, Immer lets you throw that rule out of the door. You write your typical mutable code, and it produces a new copy of state. With mutable code, there’s immutable results.
+
+```js 
+// you can do this in your reducer
+state.newValue = 5
+```
+RTK lets you do the same as it implements Immer. The good part is that you don’t really need to learn about the inner workings of Immer to use RTK. Just go ahead and mutate your application state like no one cares.
+
+
+---
+# The APIs exposed by Redux toolkit
+- .acPurple[configureStore]: Think of this as the good old createStore method with simplified configuration options and good defaults, e.g., it implements redux-thunk by default, and enables the use of the Redux Devtools Extension by default.
+- .acPurple[createReducer]: This one is a lifesaver. Instead of writing switch statements, you supply a lookup table that maps action creators to reducer functions. And you can mutate state as much as you want. This is due to Immer.
+- .acPurple[createAction]: This generates an action creator function, so you don’t have to do it. The function also has a toString method defined, so the function can be used in place of a type string. Pretty handy!
+- .acPurple[createSlice]: This is one of the most loved APIs. It lets you define your entire application state in slices. You pass an object of reducer functions, a slice name, an initial state value, and it automatically generates a slice reducer, action creators, and action types. Talk about the use of the least effort!
+
+---
+# The APIs exposed by Redux toolkit (cont)
+
+- .acPurple[createAsyncThunk]: This helps you create a thunk easily. The thunk will dispatch pending, fulfilled, or rejected action types based on the promise returned.
+- .acPurple[createEntityAdapter]: This is great for managing normalised data in your Redux store. It generates prebuilt reducers and selectors for performing CRUD operations on a normalised state structure.
+- .acPurple[createSelector]: Well, I talked about this earlier. It exists to spot redux-toolkit newbies. More seriously, it exports the function from reselect, so you don’t have to worry about it.
+
+---
+# Installation 
+[docs](https://redux-toolkit.js.org/introduction/getting-started)
+
+### Installation for an existing app 
+
+```bash 
+npm install @reduxjs/toolkit
+```
+- uninstall redux (not react-redux), because already included in rtk
+
+### Installation for a brand new app 
+
+```bash 
+npx create-react-app my-app --template redux
+```
+---
+# CreateStore 
+
+In a nutshell, createStore is to redux as configureStore is to RTK. configureStore is an abstraction over createStore. It is a superset, if you may.
+
+
+configureStore adds defaults to the Redux store setup, so you don’t have to think about it.
+
+```js 
+import { configureStore } from "@reduxjs/toolkit"
+```
+
+configureStore takes one object as an argument. This object can be one of several options, but the most notable one is the reducer key. Here’s what the change looks like:
+
+```js 
+// before 
+const store = createStore(reducer);
+
+// now 
+const store = configureStore({ reducer });
+```
+
+---
+# What changed? 
+
+- configureStore sets up Redux devtools by defualt 
+- redux-thunk middleware is setup 
+
+
+---
+
+
+To have a piece of state managed by Redux, you need three entities: action, reducer, and integration with the store.
+
+If we break this down, you’ve got to:
+
+- Create specific action types.
+- Create action creators to generate actions of the said type.
+- Create a reducer to handle all action types.
+- Integrate the created reducer to the store mostly by using the combineReducer function.
+
+---
+
+They don’t sound like much, but between creating multiple files and thinking about action string constant, the entire process could feel “boilerplatey”.
+
+So, what if there was a function that lets you specify what a piece of state, (a.k.a. a slice of state) should look like? What if this function also automatically created action creators and action types, so you don’t have to think about them?
+
+Yup! You knew where I was going with this one. RTK provides just the right utility function for this: createSlice.
+
+---
+
+# createSlice 
+
+With RTK, a new terminology emerges: state slice.
+
+A slice of state is essentially a piece of your application state object, and createSlice returns an object that contains all you need to set up that slice of slate!
+
+---
+
+# The createSlice API 
+
+const sliceObject = createSlice({
+    name: 'aSliceName',
+    initialState: someInitialStateValue,
+    reducers: {
+       // object of case reducers
+    }
+  })
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+    <script>
+        var slideshow = remark.create({
+            highlightStyle: 'monokai',
+            highlightLanguage: 'text',
+            ratio: "16:9",
+            highlightLines: true
+
+        });
+    </script>
+
+
+</body>
+
+</html>
